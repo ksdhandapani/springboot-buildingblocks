@@ -1,4 +1,4 @@
-package com.itsdhandapani.restservices.entity;
+package com.itsdhandapani.restservices.entities;
 
 public class UserDetail {
 
