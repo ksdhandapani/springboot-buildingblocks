@@ -3,10 +3,14 @@ package com.itsdhandapani.restservices.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +24,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.itsdhandapani.restservices.entities.User;
 import com.itsdhandapani.restservices.exceptions.UserExistException;
 import com.itsdhandapani.restservices.exceptions.UserNotFoundException;
+import com.itsdhandapani.restservices.exceptions.UsernameNotFoundException;
 import com.itsdhandapani.restservices.services.UserService;
 
 @RestController
+@Validated
 public class UserController {
 
 	@Autowired
@@ -34,7 +40,7 @@ public class UserController {
 	}
 
 	@PostMapping(path = "/users")
-	public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder builder) {
+	public ResponseEntity<Void> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
 		try {
 			this.userService.createUser(user);
 			HttpHeaders headers = new HttpHeaders();
@@ -46,7 +52,7 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/users/{id}")
-	public Optional<User> getUserById(@PathVariable("id") Long id) {
+	public Optional<User> getUserById(@PathVariable("id") @Min(1) Long id) {
 		try {
 			return this.userService.getUserById(id);
 		} catch (UserNotFoundException e) {
@@ -70,7 +76,12 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/users/username/{username}")
-	public User getUserByUsername(@PathVariable("username") String username) {
-		return this.userService.getUserByUsername(username);
+	public User getUserByUsername(@PathVariable("username") String username) throws UsernameNotFoundException {
+		User user = this.userService.getUserByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("User with the username '" + username + "' is not found");
+		} else {
+			return user;
+		}
 	}
 }

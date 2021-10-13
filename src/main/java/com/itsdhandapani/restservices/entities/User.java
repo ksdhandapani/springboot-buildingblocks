@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 
 @Entity
 @Table(name = "users")
@@ -14,8 +18,10 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Long id;
+	@NotBlank(message = "Username is a mandatory field")
 	@Column(name = "user_name", length = 100, nullable = false, unique = true)
 	private String username;
+	@Size(min = 2, message = "The firstName should have atleast 2 characters")
 	@Column(name = "first_name", length = 100, nullable = false)
 	private String firstName;
 	@Column(name = "last_name", length = 100, nullable = false)
