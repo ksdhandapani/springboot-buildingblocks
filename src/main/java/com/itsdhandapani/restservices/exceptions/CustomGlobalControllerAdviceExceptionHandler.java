@@ -51,4 +51,18 @@ public class CustomGlobalControllerAdviceExceptionHandler extends ResponseEntity
 		return new ResponseEntity<Object>(customErrorDetail, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(UserNotFoundException.class)
+	public final ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
+		CustomErrorDetail customErrorDetail = new CustomErrorDetail(new Date(), ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<Object>(customErrorDetail, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(OrderNotFoundException.class)
+	public final ResponseEntity<Object> handleOrderNotFoundException(OrderNotFoundException ex, WebRequest request) {
+		CustomErrorDetail customErrorDetail = new CustomErrorDetail(new Date(), ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<Object>(customErrorDetail, HttpStatus.NOT_FOUND);
+	}
+
 }

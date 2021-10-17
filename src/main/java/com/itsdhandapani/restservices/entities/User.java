@@ -1,15 +1,18 @@
 package com.itsdhandapani.restservices.entities;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
-
 
 @Entity
 @Table(name = "users")
@@ -32,6 +35,12 @@ public class User {
 	private String role;
 	@Column(name = "ssn", length = 100, nullable = false, unique = true)
 	private String ssn;
+	/*
+	 * One user can have multiple orders The mappedBy value should be the field name
+	 * of User we have in Order entity, here it is user
+	 */
+	@OneToMany(mappedBy = "user")
+	private Set<Order> orders;
 
 	public User() {
 
@@ -101,6 +110,14 @@ public class User {
 
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
+	}
+
+	public Set<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
 	}
 
 	// Required for bean logging
