@@ -13,8 +13,15 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "users")
+/**
+ * @JsonIgnore is used at field level where as @JsonIgnoreProperties is used at the class level
+ */
+//@JsonIgnoreProperties({"firstName","lastname"})
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +40,10 @@ public class User {
 	@Column(name = "role", length = 100, nullable = false)
 	private String role;
 	@Column(name = "ssn", length = 100, nullable = false, unique = true)
+	/**
+	 * If we add the @JsonIgnore annotation, in GET calls, this field will be skipped but we will face problems in POST and PUT calls, we can make it work by setting the nullable flag to true
+	 */
+	//@JsonIgnore 
 	private String ssn;
 	/*
 	 * One user can have multiple orders The mappedBy value should be the field name
