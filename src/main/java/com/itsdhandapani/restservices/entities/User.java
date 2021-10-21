@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -22,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * @JsonIgnore is used at field level where as @JsonIgnoreProperties is used at the class level
  */
 //@JsonIgnoreProperties({"firstName","lastname"})
+/**
+ * @JsonFilter is used when we want to use MappingJsonValue
+ */
+@JsonFilter(value = "userFilter")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +39,7 @@ public class User {
 	@Column(name = "first_name", length = 100, nullable = false)
 	private String firstName;
 	@Column(name = "last_name", length = 100, nullable = false)
-	private String lastname;
+	private String lastName;
 	@Column(name = "email", length = 100, nullable = false, unique = true)
 	private String email;
 	@Column(name = "role", length = 100, nullable = false)
@@ -56,11 +61,11 @@ public class User {
 
 	}
 
-	public User(Long id, String username, String firstName, String lastname, String email, String role, String ssn) {
+	public User(Long id, String username, String firstName, String lastName, String email, String role, String ssn) {
 		this.id = id;
 		this.username = username;
 		this.firstName = firstName;
-		this.lastname = lastname;
+		this.lastName = lastName;
 		this.email = email;
 		this.role = role;
 		this.ssn = ssn;
@@ -90,12 +95,12 @@ public class User {
 		this.firstName = firstName;
 	}
 
-	public String getLastname() {
-		return lastname;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setLastName(String lastname) {
+		this.lastName = lastname;
 	}
 
 	public String getEmail() {
@@ -133,7 +138,7 @@ public class User {
 	// Required for bean logging
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastname=" + lastname
+		return "User [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastname=" + lastName
 				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + "]";
 	}
 
