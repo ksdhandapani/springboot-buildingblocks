@@ -16,6 +16,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "users")
@@ -26,35 +27,44 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 /**
  * @JsonFilter is used when we want to use MappingJsonValue
  */
-@JsonFilter(value = "userFilter")
+//@JsonFilter(value = "userFilter")
+
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
+	@JsonView(Views.External.class)
 	private Long id;
 	@NotBlank(message = "Username is a mandatory field")
 	@Column(name = "user_name", length = 100, nullable = false, unique = true)
+	@JsonView(Views.External.class)
 	private String username;
 	@Size(min = 2, message = "The firstName should have atleast 2 characters")
 	@Column(name = "first_name", length = 100, nullable = false)
+	@JsonView(Views.External.class)
 	private String firstName;
 	@Column(name = "last_name", length = 100, nullable = false)
+	@JsonView(Views.External.class)
 	private String lastName;
 	@Column(name = "email", length = 100, nullable = false, unique = true)
+	@JsonView(Views.External.class)
 	private String email;
 	@Column(name = "role", length = 100, nullable = false)
+	@JsonView(Views.Internal.class)
 	private String role;
 	@Column(name = "ssn", length = 100, nullable = false, unique = true)
 	/**
 	 * If we add the @JsonIgnore annotation, in GET calls, this field will be skipped but we will face problems in POST and PUT calls, we can make it work by setting the nullable flag to true
 	 */
 	//@JsonIgnore 
+	@JsonView(Views.Internal.class)
 	private String ssn;
 	/*
 	 * One user can have multiple orders The mappedBy value should be the field name
 	 * of User we have in Order entity, here it is user
 	 */
 	@OneToMany(mappedBy = "user")
+	@JsonView(Views.Internal.class)
 	private Set<Order> orders;
 
 	public User() {

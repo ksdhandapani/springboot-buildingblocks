@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "orders")
@@ -18,8 +19,10 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "order_id", nullable = false)
+	@JsonView(Views.Internal.class)
 	private Long orderId;
 	@Column(name = "order_description")
+	@JsonView(Views.Internal.class)
 	private String orderDescription;
 	/*
 	 * Many Orders can be associated with one User
