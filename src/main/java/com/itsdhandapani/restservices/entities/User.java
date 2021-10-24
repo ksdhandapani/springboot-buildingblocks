@@ -21,7 +21,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Entity
 @Table(name = "users")
 /**
- * @JsonIgnore is used at field level where as @JsonIgnoreProperties is used at the class level
+ * @JsonIgnore is used at field level where as @JsonIgnoreProperties is used at
+ *             the class level
  */
 //@JsonIgnoreProperties({"firstName","lastname"})
 /**
@@ -54,9 +55,11 @@ public class User {
 	private String role;
 	@Column(name = "ssn", length = 100, nullable = false, unique = true)
 	/**
-	 * If we add the @JsonIgnore annotation, in GET calls, this field will be skipped but we will face problems in POST and PUT calls, we can make it work by setting the nullable flag to true
+	 * If we add the @JsonIgnore annotation, in GET calls, this field will be
+	 * skipped but we will face problems in POST and PUT calls, we can make it work
+	 * by setting the nullable flag to true
 	 */
-	//@JsonIgnore 
+	// @JsonIgnore
 	@JsonView(Views.Internal.class)
 	private String ssn;
 	/*
@@ -67,11 +70,16 @@ public class User {
 	@JsonView(Views.Internal.class)
 	private Set<Order> orders;
 
+	@Column(name = "address")
+	private String address;
+
 	public User() {
 
 	}
 
-	public User(Long id, String username, String firstName, String lastName, String email, String role, String ssn) {
+	public User(Long id, String username, String firstName, String lastName, String email, String role, String ssn,
+			Set<Order> orders, String address) {
+		super();
 		this.id = id;
 		this.username = username;
 		this.firstName = firstName;
@@ -79,6 +87,8 @@ public class User {
 		this.email = email;
 		this.role = role;
 		this.ssn = ssn;
+		this.orders = orders;
+		this.address = address;
 	}
 
 	public Long getId() {
@@ -145,11 +155,20 @@ public class User {
 		this.orders = orders;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	// Required for bean logging
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastname=" + lastName
-				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + "]";
+		return "User [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + ", orders=" + orders + ", address=" + address
+				+ "]";
 	}
 
 }
