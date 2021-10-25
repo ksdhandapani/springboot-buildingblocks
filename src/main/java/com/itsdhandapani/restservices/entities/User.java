@@ -18,6 +18,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description="This Model is used to create a new User")
 @Entity
 @Table(name = "users")
 /**
@@ -31,16 +35,19 @@ import com.fasterxml.jackson.annotation.JsonView;
 //@JsonFilter(value = "userFilter")
 
 public class User {
+	@ApiModelProperty(notes = "Auto-generated unique field", required = true, position = 1)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	@JsonView(Views.External.class)
 	private Long id;
+	@ApiModelProperty(notes = "Username should be in format - flname", example="dsudhakar", required = true, position = 2)
+	@Size(min = 2, max = 50, message = "The username should have atleast 2 characters")
 	@NotBlank(message = "Username is a mandatory field")
 	@Column(name = "user_name", length = 100, nullable = false, unique = true)
 	@JsonView(Views.External.class)
 	private String username;
-	@Size(min = 2, message = "The firstName should have atleast 2 characters")
+	@Size(min = 2, max = 50, message = "The firstName should have atleast 2 characters")
 	@Column(name = "first_name", length = 100, nullable = false)
 	@JsonView(Views.External.class)
 	private String firstName;
